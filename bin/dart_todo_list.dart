@@ -2,6 +2,12 @@ import 'dart:io';
 
 import 'package:dart_todo_list/todolist.dart';
 
+/*
+Nama : Ahmad Siddiq
+Nrp  : 3122640001
+Kelas: LJ TI 1A 
+*/
+
 void main(List<String> args) {
   Todolist todolist;
   todolist = Todolist();
