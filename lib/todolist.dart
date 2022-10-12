@@ -4,31 +4,31 @@ import 'dart:io';
 import 'dart:convert';
 
 class Todolist {
-  String filename = '';
+  String dataName = '';
 
-  Todolist([String filename = 'data.json']) {
+  Todolist([String dataName = 'data.json']) {
     // ignore: prefer_initializing_formals
-    this.filename = filename;
-    bool fileExist = File(this.filename).existsSync() &&
-        FileSystemEntity.isFileSync(this.filename);
+    this.dataName = dataName;
+    bool fileExist = File(this.dataName).existsSync() &&
+        FileSystemEntity.isFileSync(this.dataName);
     if (!fileExist) {
-      File(this.filename).createSync();
-      File(this.filename).writeAsStringSync('[]');
+      File(this.dataName).createSync();
+      File(this.dataName).writeAsStringSync('[]');
     }
   }
 
   List<dynamic> getAll() {
-    String contentFile = File(filename).readAsStringSync().trim();
+    String contentFile = File(dataName).readAsStringSync().trim();
     List<dynamic> object = jsonDecode(contentFile);
     return object;
   }
 
   Map? getByNoUrut(int noUrut) {
-    int indek = noUrut - 1;
+    int no = noUrut - 1;
     Map? result;
     List<dynamic> todos = getAll();
-    if (todos.asMap().containsKey(indek)) {
-      result = todos[indek];
+    if (todos.asMap().containsKey(no)) {
+      result = todos[no];
     }
     return result;
   }
@@ -56,7 +56,7 @@ class Todolist {
 
     allTodo.insert(todoLength, newTodo);
     if (allTodo.asMap().containsKey(todoLength)) {
-      File(filename).writeAsStringSync(jsonEncode(allTodo));
+      File(dataName).writeAsStringSync(jsonEncode(allTodo));
       result = true;
     }
     return result;
@@ -65,20 +65,20 @@ class Todolist {
   bool edit(int noUrut,
       {int? nrp, String? name, String? todo, bool? is_active, bool? is_done}) {
     bool result = false;
-    int indek = noUrut - 1;
+    int no = noUrut - 1;
     List<dynamic> allTodo = getAll();
 
-    if (allTodo.asMap().containsKey(indek)) {
-      Map todoData = allTodo[indek];
+    if (allTodo.asMap().containsKey(no)) {
+      Map todoData = allTodo[no];
       todoData['nrp'] = nrp ?? todoData['nrp'];
       todoData['name'] = name ?? todoData['name'];
       todoData['todo'] = todo ?? todoData['todo'];
       todoData['is_active'] = is_active ?? todoData['is_active'];
       todoData['is_done'] = is_done ?? todoData['is_done'];
 
-      allTodo[indek] = todoData;
+      allTodo[no] = todoData;
 
-      File(filename).writeAsStringSync(jsonEncode(allTodo));
+      File(dataName).writeAsStringSync(jsonEncode(allTodo));
       result = true;
     }
 
@@ -87,11 +87,11 @@ class Todolist {
 
   bool deleteByNoUrut(int noUrut) {
     bool result = false;
-    int indek = noUrut - 1;
+    int no = noUrut - 1;
     List<dynamic> allTodo = getAll();
-    if (allTodo.asMap().containsKey(indek)) {
-      allTodo.removeAt(indek);
-      File(filename).writeAsStringSync(jsonEncode(allTodo));
+    if (allTodo.asMap().containsKey(no)) {
+      allTodo.removeAt(no);
+      File(dataName).writeAsStringSync(jsonEncode(allTodo));
       result = true;
     }
 
